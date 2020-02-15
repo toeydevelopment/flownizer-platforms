@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "439978066837",
+    "firebase_url": "https://flownizer.firebaseio.com",
+    "project_id": "flownizer",
+    "storage_bucket": "flownizer.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439978066837:android:2cfade0878dce286676c9c",
+        "android_client_info": {
+          "package_name": "co.flownizer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439978066837-qtmh4p1q3jj4bermbi29gugoovsaavgf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3tftX3Wqv_aGr15xv6K6XZ3_PzbJXcTA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439978066837-qtmh4p1q3jj4bermbi29gugoovsaavgf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "439978066837-d7b7m3t98s4bongjbe0oo9j0in2ksifv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "co.flownizer"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
