@@ -15,14 +15,14 @@ class BarAvatar extends StatelessWidget {
               Text(
                 "คุณชิษณุพงศ์ วรจิตรไทย",
                 style: TextStyle(
-                  fontSize: 15,
+                  fontSize: 20,
                   color: Color(0xFF4F4F4F),
                 ),
               ),
               Text(
                 "พนักงานรักษาความปลอดภัย",
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 17,
                   color: Color(0xFF828282),
                 ),
               ),

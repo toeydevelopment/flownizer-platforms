@@ -29,7 +29,7 @@ class CardNotifyComponent extends StatelessWidget {
                     Text(
                       "ระดมพล วันที่ 15 กุมภาพันธ์",
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -39,7 +39,7 @@ class CardNotifyComponent extends StatelessWidget {
                     Text(
                       "10 นาทีที่แล้ว",
                       style: TextStyle(
-                        fontSize: 13,
+                        fontSize: 14,
                         color: COLOR_GREY_LIGHT_1,
                         fontWeight: FontWeight.w300,
                       ),
@@ -64,7 +64,11 @@ class CardNotifyComponent extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                      "กรุณาระดมพล เวลา 11.00 น. เพื่อลงเวลาเข้างาน ณ ทางออก 2 ห้างสรรพสินค้า ข")),
+                    "กรุณาระดมพล เวลา 11.00 น. เพื่อลงเวลาเข้างาน ณ ทางออก 2 ห้างสรรพสินค้า ข",
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  )),
             ),
           ],
         )
