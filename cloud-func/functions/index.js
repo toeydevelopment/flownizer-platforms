@@ -93,20 +93,28 @@ exports.get_txid = functions.https.onRequest(async (req, res) => {
           belonging: pid
         });
 
-      if (type === "CHECK_OUT") {
-        const s = await firestored
-          .collection("transactions")
-          .where("pid", "==", pid)
-          .where("type", "==", "CHECK_IN")
-          .orderBy("timeScanned", "desc")
-          .limit(1)
-          .get();
-        axios({
+      if (snapShot.docs[0].data().type === "CHECK_OUT") {
+        // const s = await firestored
+        //   .collection("transactions")
+        //   .where("pid", "==", pid)
+        //   .where("type", "==", "CHECK_IN")
+        //   .get();
+
+        await axios({
           method: "POST",
           url: "https://us-central1-flownizer.cloudfunctions.net/secure_work",
           data: {
             nid: pid,
-            start: s.docs[0].data().timeScanned,
+            start: new Date(
+              parseInt(
+                parseInt(snapShot.docs[0].data().timeScanned, 10) +
+                  new Date(
+                    parseInt(snapShot.docs[0].data().timeScanned, 10)
+                  ).getHours() -
+                  8,
+                10
+              )
+            ),
             stop: snapShot.docs[0].data().timeScanned
           }
         });
@@ -130,6 +138,7 @@ exports.get_txid = functions.https.onRequest(async (req, res) => {
 
 exports.secure_work = functions.https.onRequest(async (req, res) => {
   if (req.method.toUpperCase() === "POST") {
+    console.log("TESTSTST");
     const { nid, start, stop } = req.body;
 
     const Web3 = require("web3");
