@@ -1,11 +1,5 @@
 import React from 'react';
 
-export const HomeView: React.FC = () => {
-    return (
-        <div>Home</div>
-    );
-}
-
 export const NotificationView: React.FC = () => {
     return (
         <div>Notification</div>
