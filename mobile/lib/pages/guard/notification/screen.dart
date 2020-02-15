@@ -20,11 +20,21 @@ class _NotificationPageState extends State<NotificationPage> {
           ),
           child: Column(
             children: <Widget>[
-              CardNotifyComponent(),
               SizedBox(
                 height: 20,
               ),
               CardNotifyComponent(),
+              SizedBox(
+                height: 50,
+              ),
+              CardNotifyComponent(),
+              SizedBox(
+                height: 50,
+              ),
+              CardNotifyComponent(),
+              SizedBox(
+                height: 50,
+              ),
             ],
           ),
         ),

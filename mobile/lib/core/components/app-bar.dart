@@ -10,6 +10,7 @@ class AppBarME extends StatelessWidget implements PreferredSizeWidget {
   @override
   AppBar build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: true,
       backgroundColor: Colors.white,
       title: Text(
         this.title,
