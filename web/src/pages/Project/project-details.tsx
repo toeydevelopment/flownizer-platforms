@@ -16,8 +16,6 @@ function ProjectDetails() {
         <div className='area'>
           พื้นที่
           <AreaCard />
-          <AreaCard />
-          <AreaCard />
         </div>
       </div>
     </div>

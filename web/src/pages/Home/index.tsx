@@ -10,9 +10,6 @@ function HomePage() {
       <img src={Map} className='map'/>
       <div className='card'>
         <CardHomeComponent />
-        <CardHomeComponent />
-        <CardHomeComponent />
-        <CardHomeComponent />
       </div>
     </div>
   );
