@@ -4,6 +4,9 @@ import NavBar from "./components/navbar";
 import Header from "./components/header";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import HomePage from "./pages/Home";
+import ProjectDetails from './pages/Project/project-details';
+import Wage from './pages/Wage/wage';
+import Timetable from './pages/Timetable/timetable';
 
 const ItemLink = ({ title }: any) => (
   <a
@@ -27,14 +30,7 @@ function App() {
     >
       <div
         style={{
-          width: "20vw"
-        }}
-      >
-        <NavBar />
-      </div>
-      <div
-        style={{
-          width: "80vw",
+          width: "100vw",
           paddingRight: ".2rem",
           display: "flex",
           flexDirection: "column"
@@ -48,12 +44,19 @@ function App() {
         >
           <Header />
         </div>
-        <div>
+        <div
+          style={{
+            marginTop: '10vh',
+          }}
+        >
           <Router>
             <Switch>
-              <Route path="/">
+              <Route exact path="/">
                 <HomePage />
               </Route>
+              <Route path="/project" component={ProjectDetails} />
+              <Route path="/timetable" component={Timetable} />
+              <Route path="/wage" component={Wage} />
             </Switch>
           </Router>
         </div>

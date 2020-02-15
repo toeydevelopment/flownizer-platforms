@@ -1,0 +1,18 @@
+.project-details {
+    display: flex;
+    width: 100%;
+    margin-top: 40px;
+
+    .details {
+        width: 50%;
+        font-size: 2rem;
+        font-weight: 400;
+        margin-left: 57px;
+    }
+
+    .area {
+        width: 50%;
+        font-size: 2rem;
+        font-weight: 400;
+    }
+}
