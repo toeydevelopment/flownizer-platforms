@@ -1,4 +1,4 @@
-package com.duckdever.mobile
+package co.flownizer
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity
