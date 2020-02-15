@@ -11,10 +11,10 @@ const uuid = require("uuid");
 admin.initializeApp();
 const firestored = admin.firestore();
 
-const axios = require('axios');
+const axios = require("axios");
 
 exports.get_txid = functions.https.onRequest(async (req, res) => {
-    console.log(req.method.toUpperCase())
+  console.log(req.method.toUpperCase());
   switch (req.method.toUpperCase()) {
     case "GET": {
       const { txID } = req.query;
@@ -56,18 +56,6 @@ exports.get_txid = functions.https.onRequest(async (req, res) => {
         timeScanned: ""
       });
 
-      if(type === 'CHECK_OUT') {
-        await axios({
-          method: 'POST',
-          url: 'https://us-central1-flownizer.cloudfunctions.net/secure_work',
-          data: {
-            nid: pid,
-            start: "NaN",
-            stop: new Date().toDateString()
-          }
-        });
-      }
-
       return res.status(201).json({
         status: "created",
         data: {
@@ -82,7 +70,7 @@ exports.get_txid = functions.https.onRequest(async (req, res) => {
         .where("txID", "==", txID)
         .limit(1)
         .get();
-    console.log(snapShot.docs[0])
+      console.log(snapShot.docs[0]);
       if (snapShot.empty) {
         return res.status(404).json({
           status: "failure",
@@ -105,11 +93,30 @@ exports.get_txid = functions.https.onRequest(async (req, res) => {
           belonging: pid
         });
 
+      if (type === "CHECK_OUT") {
+        const s = await firestored
+          .collection("transactions")
+          .where("pid", "==", pid)
+          .where("type", "==", "CHECK_IN")
+          .orderBy("timeScanned", "desc")
+          .limit(1)
+          .get();
+        axios({
+          method: "POST",
+          url: "https://us-central1-flownizer.cloudfunctions.net/secure_work",
+          data: {
+            nid: pid,
+            start: s.docs[0].data().timeScanned,
+            stop: snapShot.docs[0].data().timeScanned
+          }
+        });
+      }
+
       return res.status(202).json({
         status: "updated",
         message: "update success",
         data: {
-          type: snapShot.docs[0].type
+          type: snapShot.docs[0].data().type
         }
       });
     }
@@ -122,76 +129,32 @@ exports.get_txid = functions.https.onRequest(async (req, res) => {
 });
 
 exports.secure_work = functions.https.onRequest(async (req, res) => {
-  if(req.method.toUpperCase() === 'POST') {
-
+  if (req.method.toUpperCase() === "POST") {
     const { nid, start, stop } = req.body;
 
-    const Web3 = require('web3');
+    const Web3 = require("web3");
     const web3 = new Web3();
-  
-    const HDWalletProvider = require('truffle-hdwallet-provider')
-    const provider = new HDWalletProvider('fee car zero banner tornado resist machine lend narrow measure later client',
-      'https://rpc.tch.in.th', 1);
+    const { factoryAbi } = require("./abi");
+
+    const HDWalletProvider = require("truffle-hdwallet-provider");
+    const provider = new HDWalletProvider(
+      "fee car zero banner tornado resist machine lend narrow measure later client",
+      "https://rpc.tch.in.th",
+      1
+    );
     web3.setProvider(provider);
-  
-    const factoryAbi = [
-      {
-        "constant": false,
-        "inputs": [
-          {
-            "internalType": "uint256",
-            "name": "_nid",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "_start",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "_stop",
-            "type": "string"
-          }
-        ],
-        "name": "addTransaction",
-        "outputs": [
-          {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-      },
-      {
-        "constant": true,
-        "inputs": [],
-        "name": "getAllTransactions",
-        "outputs": [
-          {
-            "internalType": "contract GuardTransaction[]",
-            "name": "",
-            "type": "address[]"
-          }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-      }
-    ]
-  
-    const factoryAddress = '0x8ec6f67ce2f13d1509a3fea613cf8ff0b7c240eb';
-  
+
+    const factoryAddress = "0x8ec6f67ce2f13d1509a3fea613cf8ff0b7c240eb";
+
     const factory = await new web3.eth.Contract(factoryAbi, factoryAddress);
     const accounts = await web3.eth.getAccounts();
 
-    const address = await factory.methods.addTransaction(nid, start, stop).send({
-      from: accounts[0],
-      gas: '1000000'
-    });
+    const address = await factory.methods
+      .addTransaction(nid, start, stop)
+      .send({
+        from: accounts[0],
+        gas: "1000000"
+      });
 
     return res.status(202).json({
       status: "the transaction was immuted to the blockchain",
@@ -200,8 +163,7 @@ exports.secure_work = functions.https.onRequest(async (req, res) => {
         address: address
       }
     });
-  }
-  else {
+  } else {
     return res.status(404).json({
       status: "invalid methods",
       message: "not found"
@@ -210,67 +172,69 @@ exports.secure_work = functions.https.onRequest(async (req, res) => {
 });
 
 exports.get_all_txs = functions.https.onRequest(async (req, res) => {
-  if(req.method.toUpperCase() === 'GET') {
-
-    const Web3 = require('web3');
+  if (req.method.toUpperCase() === "GET") {
+    const Web3 = require("web3");
     const web3 = new Web3();
-  
-    const HDWalletProvider = require('truffle-hdwallet-provider')
-    const provider = new HDWalletProvider('fee car zero banner tornado resist machine lend narrow measure later client',
-      'https://rpc.tch.in.th', 1);
+
+    const HDWalletProvider = require("truffle-hdwallet-provider");
+    const provider = new HDWalletProvider(
+      "fee car zero banner tornado resist machine lend narrow measure later client",
+      "https://rpc.tch.in.th",
+      1
+    );
     web3.setProvider(provider);
-  
+
     const factoryAbi = [
       {
-        "constant": false,
-        "inputs": [
+        constant: false,
+        inputs: [
           {
-            "internalType": "uint256",
-            "name": "_nid",
-            "type": "uint256"
+            internalType: "uint256",
+            name: "_nid",
+            type: "uint256"
           },
           {
-            "internalType": "string",
-            "name": "_start",
-            "type": "string"
+            internalType: "string",
+            name: "_start",
+            type: "string"
           },
           {
-            "internalType": "string",
-            "name": "_stop",
-            "type": "string"
+            internalType: "string",
+            name: "_stop",
+            type: "string"
           }
         ],
-        "name": "addTransaction",
-        "outputs": [
+        name: "addTransaction",
+        outputs: [
           {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
+            internalType: "address",
+            name: "",
+            type: "address"
           }
         ],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "function"
       },
       {
-        "constant": true,
-        "inputs": [],
-        "name": "getAllTransactions",
-        "outputs": [
+        constant: true,
+        inputs: [],
+        name: "getAllTransactions",
+        outputs: [
           {
-            "internalType": "contract GuardTransaction[]",
-            "name": "",
-            "type": "address[]"
+            internalType: "contract GuardTransaction[]",
+            name: "",
+            type: "address[]"
           }
         ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
+        payable: false,
+        stateMutability: "view",
+        type: "function"
       }
-    ]
-  
-    const factoryAddress = '0x8ec6f67ce2f13d1509a3fea613cf8ff0b7c240eb';
-  
+    ];
+
+    const factoryAddress = "0x8ec6f67ce2f13d1509a3fea613cf8ff0b7c240eb";
+
     const factory = await new web3.eth.Contract(factoryAbi, factoryAddress);
 
     const allTxs = await factory.methods.getAllTransactions().call();
@@ -282,8 +246,7 @@ exports.get_all_txs = functions.https.onRequest(async (req, res) => {
         transactions: allTxs
       }
     });
-  }
-  else {
+  } else {
     return res.status(404).json({
       status: "invalid methods",
       message: "not found"
@@ -292,108 +255,110 @@ exports.get_all_txs = functions.https.onRequest(async (req, res) => {
 });
 
 exports.get_tx = functions.https.onRequest(async (req, res) => {
-  if(req.method.toUpperCase() === 'GET') {
-
+  if (req.method.toUpperCase() === "GET") {
     const { contract_address } = req.query;
 
-    const Web3 = require('web3');
+    const Web3 = require("web3");
     const web3 = new Web3();
-  
-    const HDWalletProvider = require('truffle-hdwallet-provider')
-    const provider = new HDWalletProvider('fee car zero banner tornado resist machine lend narrow measure later client',
-      'https://rpc.tch.in.th', 1);
+
+    const HDWalletProvider = require("truffle-hdwallet-provider");
+    const provider = new HDWalletProvider(
+      "fee car zero banner tornado resist machine lend narrow measure later client",
+      "https://rpc.tch.in.th",
+      1
+    );
     web3.setProvider(provider);
-  
+
     const txAbi = [
       {
-        "inputs": [
+        inputs: [
           {
-            "internalType": "uint256",
-            "name": "_nid",
-            "type": "uint256"
+            internalType: "uint256",
+            name: "_nid",
+            type: "uint256"
           },
           {
-            "internalType": "string",
-            "name": "_start",
-            "type": "string"
+            internalType: "string",
+            name: "_start",
+            type: "string"
           },
           {
-            "internalType": "string",
-            "name": "_stop",
-            "type": "string"
+            internalType: "string",
+            name: "_stop",
+            type: "string"
           },
           {
-            "internalType": "address",
-            "name": "_sender",
-            "type": "address"
+            internalType: "address",
+            name: "_sender",
+            type: "address"
           }
         ],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "constructor"
+        payable: false,
+        stateMutability: "nonpayable",
+        type: "constructor"
       },
       {
-        "constant": true,
-        "inputs": [],
-        "name": "nid",
-        "outputs": [
+        constant: true,
+        inputs: [],
+        name: "nid",
+        outputs: [
           {
-            "internalType": "uint256",
-            "name": "",
-            "type": "uint256"
+            internalType: "uint256",
+            name: "",
+            type: "uint256"
           }
         ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
+        payable: false,
+        stateMutability: "view",
+        type: "function"
       },
       {
-        "constant": true,
-        "inputs": [],
-        "name": "sender",
-        "outputs": [
+        constant: true,
+        inputs: [],
+        name: "sender",
+        outputs: [
           {
-            "internalType": "address",
-            "name": "",
-            "type": "address"
+            internalType: "address",
+            name: "",
+            type: "address"
           }
         ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
+        payable: false,
+        stateMutability: "view",
+        type: "function"
       },
       {
-        "constant": true,
-        "inputs": [],
-        "name": "start",
-        "outputs": [
+        constant: true,
+        inputs: [],
+        name: "start",
+        outputs: [
           {
-            "internalType": "string",
-            "name": "",
-            "type": "string"
+            internalType: "string",
+            name: "",
+            type: "string"
           }
         ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
+        payable: false,
+        stateMutability: "view",
+        type: "function"
       },
       {
-        "constant": true,
-        "inputs": [],
-        "name": "stop",
-        "outputs": [
+        constant: true,
+        inputs: [],
+        name: "stop",
+        outputs: [
           {
-            "internalType": "string",
-            "name": "",
-            "type": "string"
+            internalType: "string",
+            name: "",
+            type: "string"
           }
         ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
+        payable: false,
+        stateMutability: "view",
+        type: "function"
       }
-    ]
-  
+    ];
+
     const tx = await new web3.eth.Contract(txAbi, contract_address);
 
     const nid = await tx.methods.nid().call();
@@ -411,8 +376,7 @@ exports.get_tx = functions.https.onRequest(async (req, res) => {
         sender_address: sender
       }
     });
-  }
-  else {
+  } else {
     return res.status(404).json({
       status: "invalid methods",
       message: "not found"
