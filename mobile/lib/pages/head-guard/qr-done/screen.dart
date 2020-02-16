@@ -1,9 +1,30 @@
+import 'dart:math';
+
 import "package:flutter/material.dart";
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:mobile/constants.dart';
 import 'package:mobile/core/components/app-bar.dart';
 
-class HeadGuardQrDonePage extends StatelessWidget {
+class HeadGuardQrDonePage extends StatefulWidget {
+  @override
+  _HeadGuardQrDonePageState createState() => _HeadGuardQrDonePageState();
+}
+
+class _HeadGuardQrDonePageState extends State<HeadGuardQrDonePage>
+    with SingleTickerProviderStateMixin {
+  AnimationController animationController;
+  Animation animation;
+
+  @override
+  void initState() {
+    super.initState();
+    this.animationController =
+        AnimationController(vsync: this, duration: Duration(seconds: 1))
+          ..repeat();
+    this.animation =
+        Tween(begin: 3, end: 2 * pi).animate(this.animationController);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,10 +36,20 @@ class HeadGuardQrDonePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Icon(
-              FontAwesomeIcons.checkCircle,
-              size: 150,
-              color: COLOR_SUCCESS,
+            Container(
+              height: 150,
+              child: Center(
+                child: AnimatedBuilder(
+                  animation: this.animation,
+                  builder: (ctx, child) {
+                    return Icon(
+                      FontAwesomeIcons.checkCircle,
+                      size: this.animation.value * 25,
+                      color: COLOR_SUCCESS,
+                    );
+                  },
+                ),
+              ),
             ),
             Column(
               children: <Widget>[
