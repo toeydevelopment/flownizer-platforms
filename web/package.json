@@ -27,8 +27,9 @@
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build & firebase deploy --only hosting",
+    "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
+    "dep": "firebase deploy --only hosting",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
