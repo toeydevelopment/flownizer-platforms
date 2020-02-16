@@ -14,6 +14,11 @@ const firestored = admin.firestore();
 const axios = require("axios");
 
 exports.get_txid = functions.https.onRequest(async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+
   console.log(req.method.toUpperCase());
   switch (req.method.toUpperCase()) {
     case "GET": {
@@ -137,8 +142,12 @@ exports.get_txid = functions.https.onRequest(async (req, res) => {
 });
 
 exports.secure_work = functions.https.onRequest(async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+
   if (req.method.toUpperCase() === "POST") {
-    console.log("TESTSTST");
     const { nid, start, stop } = req.body;
 
     const Web3 = require("web3");
@@ -181,6 +190,11 @@ exports.secure_work = functions.https.onRequest(async (req, res) => {
 });
 
 exports.get_all_txs = functions.https.onRequest(async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+
   if (req.method.toUpperCase() === "GET") {
     const Web3 = require("web3");
     const web3 = new Web3();
@@ -264,6 +278,11 @@ exports.get_all_txs = functions.https.onRequest(async (req, res) => {
 });
 
 exports.get_tx = functions.https.onRequest(async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+
   if (req.method.toUpperCase() === "GET") {
     const { contract_address } = req.query;
 
@@ -394,8 +413,20 @@ exports.get_tx = functions.https.onRequest(async (req, res) => {
 });
 
 exports.request_guard = functions.https.onRequest(async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+
   if (req.method.toUpperCase() === "POST") {
-    const { current_request_number, date_start, date_end, org_title, site, detail } = req.body;
+    const {
+      current_request_number,
+      date_start,
+      date_end,
+      org_title,
+      site,
+      detail
+    } = req.body;
 
     const Web3 = require("web3");
     const web3 = new Web3();
@@ -412,7 +443,10 @@ exports.request_guard = functions.https.onRequest(async (req, res) => {
 
     const factoryAddress = "0xe2576928e6a536c57af9e3d825391517b0a7b21f";
 
-    const factory = await new web3.eth.Contract(requestFactoryAbi, factoryAddress);
+    const factory = await new web3.eth.Contract(
+      requestFactoryAbi,
+      factoryAddress
+    );
     const accounts = await web3.eth.getAccounts();
 
     /*
@@ -430,9 +464,15 @@ exports.request_guard = functions.https.onRequest(async (req, res) => {
     });
     */
 
-
     const address = await factory.methods
-      .addRequest(current_request_number, date_start, date_end, org_title, site, detail)
+      .addRequest(
+        current_request_number,
+        date_start,
+        date_end,
+        org_title,
+        site,
+        detail
+      )
       .send({
         from: accounts[0],
         gas: "1000000"
@@ -469,9 +509,14 @@ exports.request_guard = functions.https.onRequest(async (req, res) => {
 });
 
 exports.start_request = functions.https.onRequest(async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+
   if (req.method.toUpperCase() === "POST") {
     const { contract_address } = req.body;
-    
+
     const Web3 = require("web3");
     const web3 = new Web3();
     const { requestAbi } = require("./abi");
@@ -487,12 +532,10 @@ exports.start_request = functions.https.onRequest(async (req, res) => {
     const request = await new web3.eth.Contract(requestAbi, contract_address);
     const accounts = await web3.eth.getAccounts();
 
-    const address = await request.methods
-      .start()
-      .send({
-        from: accounts[0],
-        gas: "1000000"
-      });
+    const address = await request.methods.start().send({
+      from: accounts[0],
+      gas: "1000000"
+    });
 
     return res.status(202).json({
       status: "the transaction was immuted to the blockchain",
@@ -510,9 +553,14 @@ exports.start_request = functions.https.onRequest(async (req, res) => {
 });
 
 exports.accept_request = functions.https.onRequest(async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+
   if (req.method.toUpperCase() === "POST") {
     const { contract_address } = req.body;
-    
+
     const Web3 = require("web3");
     const web3 = new Web3();
     const { requestAbi } = require("./abi");
@@ -528,12 +576,10 @@ exports.accept_request = functions.https.onRequest(async (req, res) => {
     const request = await new web3.eth.Contract(requestAbi, contract_address);
     const accounts = await web3.eth.getAccounts();
 
-    const address = await request.methods
-      .accept()
-      .send({
-        from: accounts[0],
-        gas: "1000000"
-      });
+    const address = await request.methods.accept().send({
+      from: accounts[0],
+      gas: "1000000"
+    });
 
     return res.status(202).json({
       status: "the transaction was immuted to the blockchain",
@@ -551,9 +597,14 @@ exports.accept_request = functions.https.onRequest(async (req, res) => {
 });
 
 exports.cancel_request = functions.https.onRequest(async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+
   if (req.method.toUpperCase() === "POST") {
     const { contract_address } = req.body;
-    
+
     const Web3 = require("web3");
     const web3 = new Web3();
     const { requestAbi } = require("./abi");
@@ -569,12 +620,10 @@ exports.cancel_request = functions.https.onRequest(async (req, res) => {
     const request = await new web3.eth.Contract(requestAbi, contract_address);
     const accounts = await web3.eth.getAccounts();
 
-    const address = await request.methods
-      .cancel()
-      .send({
-        from: accounts[0],
-        gas: "1000000"
-      });
+    const address = await request.methods.cancel().send({
+      from: accounts[0],
+      gas: "1000000"
+    });
 
     return res.status(202).json({
       status: "the transaction was immuted to the blockchain",
@@ -592,9 +641,14 @@ exports.cancel_request = functions.https.onRequest(async (req, res) => {
 });
 
 exports.contribute = functions.https.onRequest(async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+
   if (req.method.toUpperCase() === "POST") {
     const { contract_address, number, title } = req.body;
-    
+
     const Web3 = require("web3");
     const web3 = new Web3();
     const { requestAbi } = require("./abi");
@@ -610,12 +664,10 @@ exports.contribute = functions.https.onRequest(async (req, res) => {
     const request = await new web3.eth.Contract(requestAbi, contract_address);
     const accounts = await web3.eth.getAccounts();
 
-    const address = await request.methods
-      .contribute(number, title)
-      .send({
-        from: accounts[0],
-        gas: "1000000"
-      });
+    const address = await request.methods.contribute(number, title).send({
+      from: accounts[0],
+      gas: "1000000"
+    });
 
     return res.status(202).json({
       status: "the transaction was immuted to the blockchain",
@@ -633,9 +685,14 @@ exports.contribute = functions.https.onRequest(async (req, res) => {
 });
 
 exports.check_request_status = functions.https.onRequest(async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+
   if (req.method.toUpperCase() === "GET") {
-    const { contract_address } = req.query
-    
+    const { contract_address } = req.query;
+
     const Web3 = require("web3");
     const web3 = new Web3();
     const { requestAbi } = require("./abi");
@@ -650,41 +707,23 @@ exports.check_request_status = functions.https.onRequest(async (req, res) => {
 
     const request = await new web3.eth.Contract(requestAbi, contract_address);
 
-    const code = await request.methods
-      .statusCode()
-      .call();
+    const code = await request.methods.statusCode().call();
 
-    const title = await request.methods
-      .requestorTitle()
-      .call();
+    const title = await request.methods.requestorTitle().call();
 
-    const dateStart = await request.methods
-      .dateStart()
-      .call();
-    
-    const dateEnd = await request.methods
-      .dateEnd()
-      .call();
-    
-    const detail = await request.methods
-      .detail()
-      .call();
-    
-    const currentRequestNumber = await request.methods
-      .currentRequest()
-      .call();
-    
-    const site = await request.methods
-      .site()
-      .call();
+    const dateStart = await request.methods.dateStart().call();
 
-    const requestor = await request.methods
-      .requestor()
-      .call();
-    
-    const currentContribute = await request.methods
-      .currentContribute()
-      .call();
+    const dateEnd = await request.methods.dateEnd().call();
+
+    const detail = await request.methods.detail().call();
+
+    const currentRequestNumber = await request.methods.currentRequest().call();
+
+    const site = await request.methods.site().call();
+
+    const requestor = await request.methods.requestor().call();
+
+    const currentContribute = await request.methods.currentContribute().call();
 
     return res.status(202).json({
       status: "the transaction was retreived from the blockchain",
@@ -708,6 +747,11 @@ exports.check_request_status = functions.https.onRequest(async (req, res) => {
 });
 
 exports.get_all_requests = functions.https.onRequest(async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Methods", "GET");
+  res.set("Access-Control-Allow-Headers", "Content-Type");
+  res.set("Access-Control-Max-Age", "3600");
+
   if (req.method.toUpperCase() === "GET") {
     const Web3 = require("web3");
     const web3 = new Web3();
@@ -724,7 +768,10 @@ exports.get_all_requests = functions.https.onRequest(async (req, res) => {
 
     const factoryAddress = "0xe2576928e6a536c57af9e3d825391517b0a7b21f";
 
-    const factory = await new web3.eth.Contract(requestFactoryAbi, factoryAddress);
+    const factory = await new web3.eth.Contract(
+      requestFactoryAbi,
+      factoryAddress
+    );
 
     const allTxs = await factory.methods.getAllRequests().call();
 
@@ -742,4 +789,3 @@ exports.get_all_requests = functions.https.onRequest(async (req, res) => {
     });
   }
 });
-
