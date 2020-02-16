@@ -691,7 +691,12 @@ exports.check_request_status = functions.https.onRequest(async (req, res) => {
       message: "checked!",
       data: {
         statusCode: code,
-        title, dateStart, dateEnd, detail, currentRequestNumber, site, requestor, currentContribute
+        title,
+        topic: "ต้องการพนักงานรักษาความปลอดภัย",
+        from: "B A",
+        date: "21 กุมภาพันธ์ 2563",
+        time: "7:00 น. - 19:00 น.",
+        dateStart, dateEnd, detail, man: currentRequestNumber, address: site, requestor, currentContribute
       }
     });
   } else {
