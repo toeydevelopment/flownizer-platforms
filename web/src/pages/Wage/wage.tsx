@@ -71,6 +71,9 @@ function Wage() {
       display:'flex'
     }}>
       <NavBar />
+      <div className='title'>
+        ห้างสรรพสินค้า ก
+      </div>
       <div className='wage'>
         <span>คำนวณเงินเดือน</span>
         <div>

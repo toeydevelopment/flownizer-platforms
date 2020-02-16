@@ -17,8 +17,16 @@ const NavBar = () => {
       >
         หน้าหลัก
       </a>
-      <a className={`navbar__item ${pathName == ""}`}>การแจ้งเตือน</a>
-      <div style={{ height: "5vh" }}></div>
+      <a
+        className={`navbar__item ${(pathName == "allrequest" || pathName == "exchange") &&
+          "navbar__item--selected"}`}
+        onClick={() => {
+          history.push("/allrequest");
+        }}
+      >
+        แลกเปลี่ยนพนักงาน
+      </a>
+      <div style={{ height: "10vh" }}></div>
       <a className={`navbar__item ${pathName == ""}`}>จัดการ</a>
       <a
         className={`navbar__item ${pathName == "project" &&
@@ -29,7 +37,6 @@ const NavBar = () => {
       >
         ภาพรวม
       </a>
-      <a className={`navbar__item ${pathName == ""}`}>ตารางเวลา</a>
       <a
         className={`navbar__item ${pathName == "timetable" &&
           "navbar__item--selected"}`}
@@ -40,6 +47,15 @@ const NavBar = () => {
         พนักงาน
       </a>
       <a
+        className={`navbar__item ${pathName == "schedule" &&
+          "navbar__item--selected"}`}
+        onClick={() => {
+          history.push("/schedule");
+        }}
+      >
+        ตารางเวลา
+      </a>
+      <a
         className={`navbar__item ${pathName == "wage" &&
           "navbar__item--selected"}`}
         onClick={() => {
@@ -47,15 +63,6 @@ const NavBar = () => {
         }}
       >
         คำนวณเงิน
-      </a>
-      <a
-        className={`navbar__item ${pathName == "exchange" &&
-          "navbar__item--selected"}`}
-        onClick={() => {
-          history.push("/exchange");
-        }}
-      >
-        ยืมยาม
       </a>
     </div>
   );
