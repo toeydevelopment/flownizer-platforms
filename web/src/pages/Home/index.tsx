@@ -1,14 +1,16 @@
 import React from "react";
 import CardHomeComponent from "./components/card-home";
+import NavBar from "../../components/navbar";
+import Map from '../../assets/map.png'
+import './index.scss'
 
 function HomePage() {
   return (
-    <div
-      style={{
-        width: "100%"
-      }}
-    >
-      <CardHomeComponent />
+    <div className='home'>
+      <img src={Map} className='map'/>
+      <div className='card'>
+        <CardHomeComponent />
+      </div>
     </div>
   );
 }

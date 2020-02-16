@@ -9,6 +9,15 @@ class BarAvatar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          Hero(
+            tag: "logo",
+            child: Image.asset(
+              "assets/FNZ_no_text.png",
+              height: 50,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[

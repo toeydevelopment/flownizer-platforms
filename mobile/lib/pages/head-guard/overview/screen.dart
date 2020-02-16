@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:mobile/constants.dart';
 import 'package:mobile/pages/head-guard/overview/components/card-work.dart';
+import 'package:mobile/pages/head-guard/overview/components/map.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class HeadGuardOverViewPage extends StatefulWidget {
@@ -24,7 +25,7 @@ class _HeadGuardOverViewPageState extends State<HeadGuardOverViewPage> {
             borderRadius: BorderRadius.circular(5),
           ),
           onPressed: () {
-            Navigator.of(context).pushNamed("/head/checkin");
+            Navigator.of(context).pushNamed("/head/check/CHECK_IN");
           },
           child: Text(
             "ลงเวลาเข้างาน",
@@ -40,7 +41,9 @@ class _HeadGuardOverViewPageState extends State<HeadGuardOverViewPage> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.of(context).pushNamed("/head/check/CHECK_OUT");
+          },
           child: Text(
             "ลงเวลาออกงาน",
             style: TextStyle(
@@ -59,11 +62,6 @@ class _HeadGuardOverViewPageState extends State<HeadGuardOverViewPage> {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          GoogleMap(
-            initialCameraPosition: CameraPosition(
-              target: LatLng(10, 12),
-            ),
-          ),
           SlidingUpPanel(
               maxHeight: MediaQuery.of(context).size.height - 50,
               borderRadius: BorderRadius.only(
@@ -95,11 +93,7 @@ class _HeadGuardOverViewPageState extends State<HeadGuardOverViewPage> {
                       )
                     ],
                   ),
-              body: GoogleMap(
-                initialCameraPosition: CameraPosition(
-                  target: LatLng(10, 12),
-                ),
-              ))
+              body: MapComponent())
         ],
       ),
     );

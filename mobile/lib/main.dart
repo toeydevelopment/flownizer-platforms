@@ -14,8 +14,8 @@ import 'package:mobile/pages/head-guard/qr-done/screen.dart';
 
 void main() => runApp(
       // DevicePreview(
-        // builder: (context) =>
-         MyApp(),
+      // builder: (context) =>
+      MyApp(),
       // ),
     );
 
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
         "/notification": (ctx) => NotificationPage(),
         "/head": (ctx) => HeadGuardHomePage(),
         // "/head/confirm": (ctx) => HeadGuardQrDonePage(),
-        "/head/checkin": (ctx) => HeadGuardQrCheckinPage(),
+        // "/head/checkin": (ctx) => HeadGuardQrCheckinPage(),
         "/head/checked": (ctx) => HeadGuardQrDonePage(),
         "/guard": (ctx) => GuardHomePage(),
         "/guard/help": (ctx) => GuardHelpPage(),
@@ -49,6 +49,12 @@ class MyApp extends StatelessWidget {
         var paths = settings.name.split("/");
 
         if (paths[1] == "head") {
+          if (paths[2] == "check") {
+            return MaterialPageRoute(
+                builder: (ctx) => HeadGuardQrCheckinPage(
+                      type: paths[3],
+                    ));
+          }
           if (paths[2] == "overview") {
             return MaterialPageRoute(
               builder: (ctx) => HeadGuardOverViewPage(

@@ -1,0 +1,30 @@
+.request-card {  
+  img {
+    height: 64px;
+    width: auto;
+    margin-right: 18px;
+  }
+
+  .text {
+    font-weight: 300;
+  }
+
+  .button-box {
+    display: flex;
+    margin-top: 16px;
+    justify-content: flex-end;
+    
+    .button {
+      &.color {
+        color: white;
+        background-color: #3C78D8;
+      }
+    }
+  }
+
+  box-shadow: 4px 4px 18px rgba(0, 0, 0, 0.08);
+  border-radius: 13px;
+  padding: 1rem 1rem;
+  width: 380px;
+  margin-left: 40px;
+}

@@ -18,11 +18,12 @@ class CommonLoginPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              CircleAvatar(
-                backgroundColor: Colors.grey,
-                maxRadius: 100,
-                child: FlutterLogo(
-                  size: 100,
+              Hero(
+                tag: "logo",
+                child: Image.asset(
+                  "assets/FNZ_no_text.png",
+                  fit: BoxFit.cover,
+                  height: 300,
                 ),
               ),
               Container(
@@ -63,9 +64,11 @@ class CommonLoginPage extends StatelessWidget {
                           RaisedButton(
                             onPressed: () {
                               if (this.username == "headguard")
-                                Navigator.of(context).pushReplacementNamed("/head");
+                                Navigator.of(context)
+                                    .pushReplacementNamed("/head");
                               else
-                                Navigator.of(context).pushReplacementNamed("/guard");
+                                Navigator.of(context)
+                                    .pushReplacementNamed("/guard");
                             },
                             color: COLOR_PRIMARY,
                             child: Text(
