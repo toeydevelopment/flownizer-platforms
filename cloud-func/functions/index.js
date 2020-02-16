@@ -399,6 +399,7 @@ exports.request_guard = functions.https.onRequest(async (req, res) => {
 
     const Web3 = require("web3");
     const web3 = new Web3();
+    // const { requestFactoryAbi, requestAbi } = require("./abi");
     const { requestFactoryAbi } = require("./abi");
 
     const HDWalletProvider = require("truffle-hdwallet-provider");
@@ -409,10 +410,26 @@ exports.request_guard = functions.https.onRequest(async (req, res) => {
     );
     web3.setProvider(provider);
 
-    const factoryAddress = "0xb97534147eb792ed7ea9cb71c3e0520daa21bd99";
+    const factoryAddress = "0xe2576928e6a536c57af9e3d825391517b0a7b21f";
 
     const factory = await new web3.eth.Contract(requestFactoryAbi, factoryAddress);
     const accounts = await web3.eth.getAccounts();
+
+    /*
+    const codeHash = '0x1aa0bb8d7584921357cd2c6847f7a0cd896e3ae99a6b95908f22a693d9e6c5c1'
+    const params = { city: site, key: 'rain', sub_key: '1h' };
+  
+    const { proof } = await axios({
+      method: 'POST',
+      url: 'http://rpc.alpha.bandchain.org/bandsv/request',
+      data: {
+        type: 'FULL',
+        params: { city: site, key: 'rain', sub_key: '1h' },
+        codeHash: codeHash
+      }
+    });
+    */
+
 
     const address = await factory.methods
       .addRequest(current_request_number, date_start, date_end, org_title, site, detail)
@@ -420,6 +437,21 @@ exports.request_guard = functions.https.onRequest(async (req, res) => {
         from: accounts[0],
         gas: "1000000"
       });
+
+    /*
+    const address = await factory.methods
+      .addRequest(current_request_number, date_start, date_end, org_title, site, detail, codeHash, params, '0x9839820c589CE0e2caFE995CB018B6338C1A2532')
+      .send({
+        from: accounts[0],
+        gas: "1000000"
+      }).then(async (_, res) => {
+        const request = await new web3.eth.Contract(requestAbi, res);
+        await request.methods.update(proof.evmProofBytes).send({
+          from: accounts[0],
+          gas: "1000000"
+        })
+      });
+    */
 
     return res.status(202).json({
       status: "the transaction was immuted to the blockchain",
@@ -438,7 +470,7 @@ exports.request_guard = functions.https.onRequest(async (req, res) => {
 
 exports.start_request = functions.https.onRequest(async (req, res) => {
   if (req.method.toUpperCase() === "POST") {
-    const { contract_address } = req.data
+    const { contract_address } = req.body;
     
     const Web3 = require("web3");
     const web3 = new Web3();
@@ -479,7 +511,7 @@ exports.start_request = functions.https.onRequest(async (req, res) => {
 
 exports.accept_request = functions.https.onRequest(async (req, res) => {
   if (req.method.toUpperCase() === "POST") {
-    const { contract_address } = req.data
+    const { contract_address } = req.body;
     
     const Web3 = require("web3");
     const web3 = new Web3();
@@ -520,7 +552,7 @@ exports.accept_request = functions.https.onRequest(async (req, res) => {
 
 exports.cancel_request = functions.https.onRequest(async (req, res) => {
   if (req.method.toUpperCase() === "POST") {
-    const { contract_address } = req.data
+    const { contract_address } = req.body;
     
     const Web3 = require("web3");
     const web3 = new Web3();
@@ -561,7 +593,7 @@ exports.cancel_request = functions.https.onRequest(async (req, res) => {
 
 exports.contribute = functions.https.onRequest(async (req, res) => {
   if (req.method.toUpperCase() === "POST") {
-    const { contract_address, number, title } = req.data
+    const { contract_address, number, title } = req.body;
     
     const Web3 = require("web3");
     const web3 = new Web3();
@@ -622,11 +654,44 @@ exports.check_request_status = functions.https.onRequest(async (req, res) => {
       .statusCode()
       .call();
 
+    const title = await request.methods
+      .requestorTitle()
+      .call();
+
+    const dateStart = await request.methods
+      .dateStart()
+      .call();
+    
+    const dateEnd = await request.methods
+      .dateEnd()
+      .call();
+    
+    const detail = await request.methods
+      .detail()
+      .call();
+    
+    const currentRequestNumber = await request.methods
+      .currentRequest()
+      .call();
+    
+    const site = await request.methods
+      .site()
+      .call();
+
+    const requestor = await request.methods
+      .requestor()
+      .call();
+    
+    const currentContribute = await request.methods
+      .currentContribute()
+      .call();
+
     return res.status(202).json({
       status: "the transaction was retreived from the blockchain",
       message: "checked!",
       data: {
-        statusCode: code
+        statusCode: code,
+        title, dateStart, dateEnd, detail, currentRequestNumber, site, requestor, currentContribute
       }
     });
   } else {
@@ -636,3 +701,40 @@ exports.check_request_status = functions.https.onRequest(async (req, res) => {
     });
   }
 });
+
+exports.get_all_requests = functions.https.onRequest(async (req, res) => {
+  if (req.method.toUpperCase() === "GET") {
+    const Web3 = require("web3");
+    const web3 = new Web3();
+
+    const HDWalletProvider = require("truffle-hdwallet-provider");
+    const provider = new HDWalletProvider(
+      "fee car zero banner tornado resist machine lend narrow measure later client",
+      "https://rpc.tch.in.th",
+      1
+    );
+    web3.setProvider(provider);
+
+    const { requestFactoryAbi } = require("./abi");
+
+    const factoryAddress = "0xe2576928e6a536c57af9e3d825391517b0a7b21f";
+
+    const factory = await new web3.eth.Contract(requestFactoryAbi, factoryAddress);
+
+    const allTxs = await factory.methods.getAllRequests().call();
+
+    return res.status(202).json({
+      status: "retreival completed!",
+      message: "retreived successfully",
+      data: {
+        requests: allTxs
+      }
+    });
+  } else {
+    return res.status(404).json({
+      status: "invalid methods",
+      message: "not found"
+    });
+  }
+});
+
