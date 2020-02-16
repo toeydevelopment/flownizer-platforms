@@ -18,7 +18,7 @@ const NavBar = () => {
         หน้าหลัก
       </a>
       <a className={`navbar__item ${pathName == ""}`}>การแจ้งเตือน</a>
-      <div style={{ height: "10vh" }}></div>
+      <div style={{ height: "5vh" }}></div>
       <a className={`navbar__item ${pathName == ""}`}>จัดการ</a>
       <a
         className={`navbar__item ${pathName == "project" &&
@@ -47,6 +47,15 @@ const NavBar = () => {
         }}
       >
         คำนวณเงิน
+      </a>
+      <a
+        className={`navbar__item ${pathName == "exchange" &&
+          "navbar__item--selected"}`}
+        onClick={() => {
+          history.push("/exchange");
+        }}
+      >
+        ยืมยาม
       </a>
     </div>
   );

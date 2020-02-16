@@ -7,6 +7,7 @@ import HomePage from "./pages/Home";
 import ProjectDetails from './pages/Project/project-details';
 import Wage from './pages/Wage/wage';
 import Timetable from './pages/Timetable/timetable';
+import ExchangePage from "./pages/Exchange";
 
 const ItemLink = ({ title }: any) => (
   <a
@@ -55,6 +56,7 @@ function App() {
                 <HomePage />
               </Route>
               <Route path="/project" component={ProjectDetails} />
+              <Route path="/exchange" component={ExchangePage} />
               <Route path="/timetable" component={Timetable} />
               <Route path="/wage" component={Wage} />
             </Switch>
