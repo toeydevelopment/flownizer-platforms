@@ -14,12 +14,21 @@
   &__item {
     &,
     &:link,
-    &:visited {
+    &:visited,
+    &__title {
       width: 80%;
       color: white;
       font-size: 1.7rem;
       padding: 1rem 1rem 1rem 1rem;
       transition: all 0.2s;
+    }
+
+    &__title {
+      font-weight: bold;
+      letter-spacing: 3px;
+      padding-bottom: 0.1rem;
+      border-bottom: 1px solid white;
+      margin-bottom: 1rem;
     }
 
     &:hover {

@@ -24,10 +24,10 @@ const NavBar = () => {
           history.push("/allrequest");
         }}
       >
-        แลกเปลี่ยนพนักงาน
+        ยืมพนักงาน
       </a>
       <div style={{ height: "10vh" }}></div>
-      <a className={`navbar__item ${pathName == ""}`}>จัดการ</a>
+      <a className={`navbar__item__title ${pathName == ""}`}>การจัดการ</a>
       <a
         className={`navbar__item ${pathName == "project" &&
           "navbar__item--selected"}`}
