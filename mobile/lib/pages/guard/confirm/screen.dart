@@ -147,7 +147,10 @@ class GuardConfirmPage extends StatelessWidget {
                     vertical: 10,
                   ),
                   color: COLOR_PRIMARY,
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil("/guard", (_) => false);
+                  },
                   child: Text(
                     "เสร็จสิ้นรายการ",
                     style: TextStyle(
@@ -158,7 +161,9 @@ class GuardConfirmPage extends StatelessWidget {
                   ),
                 ),
                 FlatButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed("/guard/help");
+                    },
                     child: Text(
                       "แจ้งปัญหา",
                       style: TextStyle(

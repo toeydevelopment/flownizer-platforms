@@ -58,7 +58,7 @@ class _HeadGuardQrCheckinPageState extends State<HeadGuardQrCheckinPage> {
         this.load = false;
         this.txID = txID;
       });
-      this.refTime = Timer.periodic(Duration(seconds: 2), (_) async {
+      this.refTime = Timer.periodic(Duration(seconds: 3), (_) async {
         print("polling....");
         var res = await get(
           "https://us-central1-flownizer.cloudfunctions.net/get_txid/?txID=$txID",
@@ -91,7 +91,8 @@ class _HeadGuardQrCheckinPageState extends State<HeadGuardQrCheckinPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarME("แสกนเข้างาน"),
+      appBar:
+          AppBarME(widget.type == "CHECK_IN" ? "แสกนเข้างาน" : "แสกนออกงาน"),
       body: Column(
         children: <Widget>[
           Text(
